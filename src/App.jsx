@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import FormClima from "./components/FormClima";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
           El clima ahora
         </h5>
       </header>
-      <main>main</main>
+      <main>
+        <FormClima />
+      </main>
       <footer>
         <h6 className="text-center my-3">
           &copy; Todos los derechos reservados.
