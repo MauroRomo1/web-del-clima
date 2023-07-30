@@ -1,11 +1,18 @@
-import {
-  faMagnifyingGlass,
-  faMagnifyingGlassLocation,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
 
 const FormClima = () => {
+  const [formValue, setFormValue] = useState({
+    pais: "",
+    ciudad: "",
+  });
+
+  const handleChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
+
   return (
     <section className="container my-4">
       <h5 className="text-center mb-3">
@@ -22,12 +29,24 @@ const FormClima = () => {
           <Row className="g-2">
             <Col md>
               <FloatingLabel controlId="floatingInputGrid" label="Pais">
-                <Form.Control type="text" name="pais" placeholder="Argentina" />
+                <Form.Control
+                  type="text"
+                  name="pais"
+                  value={formValue.pais}
+                  onChange={handleChange}
+                  placeholder="Argentina"
+                />
               </FloatingLabel>
             </Col>
             <Col md>
               <FloatingLabel controlId="floatingInputGrid" label="Ciudad">
-                <Form.Control type="text" name="ciudad" placeholder="Tucumán" />
+                <Form.Control
+                  type="text"
+                  name="ciudad"
+                  value={formValue.ciudad}
+                  onChange={handleChange}
+                  placeholder="Tucumán"
+                />
               </FloatingLabel>
             </Col>
             <Button variant="primary" type="submit">
