@@ -9,7 +9,38 @@ const FormClima = () => {
     pais: "",
   });
 
-  const [ubicacion, setUbicacion] = useState({});
+  const [ubicacion, setUbicacion] = useState({
+    nombreCiudad: "",
+    inicialesPais: "",
+    temperatura: "",
+    temperaturaMin: "",
+    temperaturaMax: "",
+    iconoClima: "",
+    iconoDescripcion: "",
+  });
+
+  const imgIcons = {
+    "01d":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20with%20Face.png",
+    "01n":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/New%20Moon%20Face.png",
+    "02d":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20Behind%20Cloud.png",
+    "03d":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png",
+    "03n":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png",
+    "10d":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20Behind%20Rain%20Cloud.png",
+    "11d":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud%20with%20Lightning.png",
+    "11n":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud%20with%20Lightning.png",
+    "13d":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Snowflake.png",
+    "13n":
+      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Snowflake.png",
+  };
 
   const handleChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
@@ -43,8 +74,22 @@ const FormClima = () => {
       if (data.cod === "404") {
         console.log("Ciudad no encontrada");
       } else {
-        setUbicacion(data);
-        console.log(ubicacion);
+        const {
+          name,
+          main: { temp, temp_min, temp_max },
+          weather: [arr],
+          sys: { country },
+        } = data;
+        setUbicacion({
+          nombreCiudad: name,
+          inicialesPais: country,
+          temperatura: parseInt(temp - 273.15),
+          temperaturaMin: parseInt(temp_min - 273.15),
+          temperaturaMax: parseInt(temp_max - 273.15),
+          iconoClima: arr.icon,
+          iconoDescripcion: arr.description,
+        });
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -53,17 +98,17 @@ const FormClima = () => {
 
   return (
     <section className="container my-4">
-      <h5 className="text-center mb-3">
+      <h6 className="text-center mb-3">
         <img
           src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Globe%20Showing%20Americas.png"
           alt="Globe Showing Americas"
           className="iconGlobehowingAmericas"
         />
         Consulta el clima del lugar que quieras
-      </h5>
+      </h6>
 
       <Row className=" justify-content-center">
-        <Col md={8}>
+        <Col md={10} lg={8}>
           <Form onSubmit={handleSubmit}>
             <Row className="g-2">
               <Col md>
@@ -100,7 +145,31 @@ const FormClima = () => {
           </Form>
         </Col>
       </Row>
-      <h2>{ubicacion.name}</h2>
+
+      <Row className="justify-content-center my-5">
+        <Col
+          className="text-center text-white shadow p-2 rounded bg-clima"
+          xs={11}
+          md={9}
+          lg={6}
+        >
+          <h6 className="text-white mt-3">
+            El clima en {ubicacion.nombreCiudad}, {ubicacion.inicialesPais}
+          </h6>
+          <img
+            src={
+              imgIcons[`${ubicacion.iconoClima}`]
+                ? imgIcons[`${ubicacion.iconoClima}`]
+                : `https://openweathermap.org/img/wn/${ubicacion.iconoClima}@2x.png`
+            }
+            alt={ubicacion.iconoDescripcion}
+            className="d-flex mx-auto img-fluid iconClima"
+          />
+          <h1>{ubicacion.temperatura} °C</h1>
+          <p>Max: {ubicacion.temperaturaMax} °C</p>
+          <p>Min: {ubicacion.temperaturaMin} °C</p>
+        </Col>
+      </Row>
     </section>
   );
 };
