@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { imgIcons } from "../imgIcons.js";
 import { useEffect, useState } from "react";
 import CardClima from "./CardClima";
+import SpinnerComponet from "./SpinnerComponet.jsx";
 
 const FormClima = () => {
   const [formValue, setFormValue] = useState({
@@ -21,6 +22,8 @@ const FormClima = () => {
     iconoClima: "",
     iconoDescripcion: "",
   });
+
+  const [mostrarSpinner, setMostrarSpinner] = useState(true);
 
   const handleChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
@@ -48,6 +51,7 @@ const FormClima = () => {
   }, []);
 
   const fetchClima = async (ciudad = "tucuman", pais = "argentina") => {
+    setMostrarSpinner(true);
     const keyAPI = "f88da05e873e48f037279aea8bb7d78b";
     try {
       const repuesta = await fetch(
@@ -61,6 +65,7 @@ const FormClima = () => {
           icon: "error",
           title: "<h6>Ciudad o pais no encotrada</h6>",
         });
+        setMostrarSpinner(false);
       } else {
         const {
           name,
@@ -68,7 +73,6 @@ const FormClima = () => {
           weather: [arr],
           sys: { country },
         } = data;
-
         setUbicacion({
           nombreCiudad: name,
           inicialesPais: country,
@@ -78,6 +82,7 @@ const FormClima = () => {
           iconoClima: arr.icon,
           iconoDescripcion: arr.description,
         });
+        setMostrarSpinner(false);
       }
     } catch (error) {
       console.log(error);
@@ -134,7 +139,11 @@ const FormClima = () => {
         </Col>
       </Row>
 
-      <CardClima ubicacion={ubicacion} imgIcons={imgIcons} />
+      {mostrarSpinner ? (
+        <SpinnerComponet />
+      ) : (
+        <CardClima ubicacion={ubicacion} imgIcons={imgIcons} />
+      )}
     </section>
   );
 };
