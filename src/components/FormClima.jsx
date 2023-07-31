@@ -1,7 +1,11 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import { imgIcons } from "../imgIcons.js";
+
+import { useEffect, useState } from "react";
+
+import CardClima from "./CardClima";
 
 const FormClima = () => {
   const [formValue, setFormValue] = useState({
@@ -18,29 +22,6 @@ const FormClima = () => {
     iconoClima: "",
     iconoDescripcion: "",
   });
-
-  const imgIcons = {
-    "01d":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20with%20Face.png",
-    "01n":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/New%20Moon%20Face.png",
-    "02d":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20Behind%20Cloud.png",
-    "03d":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png",
-    "03n":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png",
-    "10d":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun%20Behind%20Rain%20Cloud.png",
-    "11d":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud%20with%20Lightning.png",
-    "11n":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud%20with%20Lightning.png",
-    "13d":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Snowflake.png",
-    "13n":
-      "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Snowflake.png",
-  };
 
   const handleChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
@@ -146,30 +127,7 @@ const FormClima = () => {
         </Col>
       </Row>
 
-      <Row className="justify-content-center my-5">
-        <Col
-          className="text-center text-white shadow p-2 rounded bg-clima"
-          xs={11}
-          md={9}
-          lg={6}
-        >
-          <h6 className="text-white mt-3">
-            El clima en {ubicacion.nombreCiudad}, {ubicacion.inicialesPais}
-          </h6>
-          <img
-            src={
-              imgIcons[`${ubicacion.iconoClima}`]
-                ? imgIcons[`${ubicacion.iconoClima}`]
-                : `https://openweathermap.org/img/wn/${ubicacion.iconoClima}@2x.png`
-            }
-            alt={ubicacion.iconoDescripcion}
-            className="d-flex mx-auto img-fluid iconClima"
-          />
-          <h1>{ubicacion.temperatura} °C</h1>
-          <p>Max: {ubicacion.temperaturaMax} °C</p>
-          <p>Min: {ubicacion.temperaturaMin} °C</p>
-        </Col>
-      </Row>
+      <CardClima ubicacion={ubicacion} imgIcons={imgIcons} />
     </section>
   );
 };
