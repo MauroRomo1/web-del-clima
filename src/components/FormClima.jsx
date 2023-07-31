@@ -1,10 +1,9 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Col, FloatingLabel, Form, Row } from "react-bootstrap";
+import Swal from "sweetalert2";
 import { imgIcons } from "../imgIcons.js";
-
 import { useEffect, useState } from "react";
-
 import CardClima from "./CardClima";
 
 const FormClima = () => {
@@ -31,16 +30,21 @@ const FormClima = () => {
     e.preventDefault();
 
     if (formValue.ciudad.trim() === "" || formValue.pais.trim() === "") {
-      console.warn("Debes de llenar todos los campos");
+      Swal.fire({
+        icon: "error",
+        title: "<h6>Debes de llenar todos los campos</h6>",
+      });
+      setFormValue({
+        ciudad: "",
+        pais: "",
+      });
     } else {
       fetchClima(formValue.ciudad, formValue.pais);
-      console.log(ubicacion);
     }
   };
 
   useEffect(() => {
     fetchClima();
-    console.log(ubicacion);
   }, []);
 
   const fetchClima = async (ciudad = "tucuman", pais = "argentina") => {
@@ -53,7 +57,10 @@ const FormClima = () => {
       const data = await repuesta.json();
 
       if (data.cod === "404") {
-        console.log("Ciudad no encontrada");
+        Swal.fire({
+          icon: "error",
+          title: "<h6>Ciudad o pais no encotrada</h6>",
+        });
       } else {
         const {
           name,
@@ -61,6 +68,7 @@ const FormClima = () => {
           weather: [arr],
           sys: { country },
         } = data;
+
         setUbicacion({
           nombreCiudad: name,
           inicialesPais: country,
@@ -70,7 +78,6 @@ const FormClima = () => {
           iconoClima: arr.icon,
           iconoDescripcion: arr.description,
         });
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
